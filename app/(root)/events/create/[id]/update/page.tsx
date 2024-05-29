@@ -1,10 +1,9 @@
 import EventForm from "@/components/shared/EventForm"
-import { auth } from "@clerk/nextjs"
+import { auth, currentUser } from "@clerk/nextjs"
 
-const UpdateEvent = () => {
-    const { sessionClaims } = auth();
-
-    const userId = sessionClaims?.userId as string;
+export default async function UpdateEvent() {
+    const user = await currentUser()
+    const userId = user?.publicMetadata.userId as string;
 
     return (
         <>
@@ -21,4 +20,3 @@ const UpdateEvent = () => {
     )
 }
 
-export default UpdateEvent

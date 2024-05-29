@@ -1,11 +1,12 @@
 import EventForm from "@/components/shared/EventForm"
 import { auth } from "@clerk/nextjs"
+import { currentUser } from "@clerk/nextjs/server";
 
-const CreateEvent = () => {
-    const { sessionClaims } = auth();
-
-    const userId = sessionClaims?.userId as string;
-
+export default async function CreateEvent() {
+    const user = await currentUser()
+    const userId = user?.publicMetadata.userId as string;
+    (console.log("userId : ",userId))
+    
     return (
         <>
             <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
@@ -20,5 +21,3 @@ const CreateEvent = () => {
         </>
     )
 }
-
-export default CreateEvent

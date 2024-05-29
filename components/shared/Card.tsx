@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { DeleteConfirmation } from './DeleteConfirmation'
+import { currentUser } from '@clerk/nextjs/server'
 
 type CardProps = {
   event: IEvent,
@@ -12,9 +13,9 @@ type CardProps = {
   hidePrice?: boolean
 }
 
-const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
-  const { sessionClaims } = auth();
-  const userId = sessionClaims?.userId as string;
+export default async function Card({ event, hasOrderLink, hidePrice }: CardProps) {
+    const user = await currentUser()
+    const userId = user?.publicMetadata.userId as string;
 
   const isEventCreator = userId === event.organizer._id.toString();
 
@@ -73,5 +74,3 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
     </div>
   )
 }
-
-export default Card
